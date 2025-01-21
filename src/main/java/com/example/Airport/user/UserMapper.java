@@ -1,8 +1,4 @@
-package com.example.Airport.user.mapper;
-
-import com.example.Airport.user.dto.UserRequest;
-import com.example.Airport.user.dto.UserResponse;
-import com.example.Airport.user.model.User;
+package com.example.Airport.user;
 
 public class UserMapper {
 

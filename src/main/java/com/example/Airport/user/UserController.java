@@ -1,9 +1,5 @@
-package com.example.Airport.user.controller;
+package com.example.Airport.user;
 
-import com.example.Airport.user.dto.UserRequest;
-import com.example.Airport.user.dto.UserResponse;
-import com.example.Airport.user.model.User;
-import com.example.Airport.user.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

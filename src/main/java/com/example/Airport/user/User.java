@@ -1,4 +1,4 @@
-package com.example.Airport.user.model;
+package com.example.Airport.user;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,13 +18,13 @@ public class User {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "username", nullable = false)
+    @Column(length = 50, name = "username", nullable = false)
     private String username;
     
-    @Column(name= "email", nullable = false)
+    @Column(unique = true, length = 100, name= "email", nullable = false)
     private String email;
     
-    @Column(name= "password", nullable = false)
+    @Column(length = 255, name= "password", nullable = false)
     private String password;
 
     public User(String username, String email, String password) {

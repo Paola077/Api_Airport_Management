@@ -1,4 +1,4 @@
-package com.example.Airport.user.dto;
+package com.example.Airport.user;
 
 public record UserResponse(
         Long id,
