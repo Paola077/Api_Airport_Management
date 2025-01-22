@@ -6,6 +6,7 @@ import com.example.Airport.airport.exceptions.AirportNotFoundException;
 import com.example.Airport.flight.FlightRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,8 +38,19 @@ public class AirportService {
         return AirportMapper.toResponse(savedAirport);
     }
 
-    public List<Airport> getAllAirports() {
-        return airportRepository.findAll();
+    public List<AirportResponse> findAll() {
+        List<Airport> airportList = airportRepository.findAll();
+        List<AirportResponse> airportResponseList = new java.util.ArrayList<>(Collections.emptyList());
+        airportList.forEach(airport -> {
+            AirportResponse airportResponse = AirportMapper.toResponse(airport);
+            airportResponseList.add(airportResponse);
+        });
+
+        if (airportList.isEmpty()) {
+            throw new AirportNotFoundException("There is not airports to show");
+        }
+
+        return airportResponseList;
     }
 
     public AirportResponse updateAirport(Long id, AirportRequest airportRequest) {

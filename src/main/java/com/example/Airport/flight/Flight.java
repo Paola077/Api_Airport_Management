@@ -24,7 +24,7 @@ public class Flight {
 
     @ManyToOne
     @JoinColumn(name = "origin_id", nullable = false)
-    private Airport origin; // Aeropuerto de origen
+    private Airport origin;
 
     @ManyToOne
     @JoinColumn(name = "destination_id", nullable = false)
@@ -45,5 +45,4 @@ public class Flight {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private FlightStatus status;
-
 }

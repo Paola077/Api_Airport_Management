@@ -26,22 +26,14 @@ public class AirportController {
 
     @GetMapping
     public ResponseEntity<List<AirportResponse>> getAllAirports() {
-        List<Airport> airports = airportService.getAllAirports();
-
-        List<AirportResponse> airportResponses = airports.stream()
-                .map(airport -> new AirportResponse(
-                        airport.getId(),
-                        airport.getCode(),
-                        airport.getName(),
-                        airport.getLocation()))
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(airportResponses);
+       List<AirportResponse> airportResponseList = airportService.findAll();
+       return new ResponseEntity<>(airportResponseList, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<AirportResponse> updateAirport(
             @PathVariable Long id,
-            @RequestBody AirportRequest airportRequest) {
+            @Valid @RequestBody AirportRequest airportRequest) {
         AirportResponse updatedAirport = airportService.updateAirport(id, airportRequest);
         return ResponseEntity.ok(updatedAirport);
     }
