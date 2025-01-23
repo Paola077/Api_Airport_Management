@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AirportService {
@@ -40,17 +41,25 @@ public class AirportService {
 
     public List<AirportResponse> findAll() {
         List<Airport> airportList = airportRepository.findAll();
-        List<AirportResponse> airportResponseList = new java.util.ArrayList<>(Collections.emptyList());
-        airportList.forEach(airport -> {
-            AirportResponse airportResponse = AirportMapper.toResponse(airport);
-            airportResponseList.add(airportResponse);
-        });
 
         if (airportList.isEmpty()) {
             throw new AirportNotFoundException("There is not airports to show");
         }
 
-        return airportResponseList;
+        return airportList.stream()
+                .map(AirportMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    public AirportResponse findById(Long id) {
+        Optional<Airport> optionalAirport = airportRepository.findById(id);
+
+        if(optionalAirport.isEmpty()) {
+            throw new AirportNotFoundException("The airport with id " + id + " does not exist.");
+        }
+
+        Airport airport = optionalAirport.get();
+        return AirportMapper.toResponse(airport);
     }
 
     public AirportResponse updateAirport(Long id, AirportRequest airportRequest) {

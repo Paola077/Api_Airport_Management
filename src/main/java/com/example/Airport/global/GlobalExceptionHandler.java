@@ -3,7 +3,10 @@ package com.example.Airport.global;
 import com.example.Airport.airport.exceptions.AirportAlreadyExistException;
 import com.example.Airport.airport.exceptions.AirportInvalidModificationException;
 import com.example.Airport.airport.exceptions.AirportNotFoundException;
-import com.example.Airport.user.exceptions.AirportExistingUserException;
+import com.example.Airport.flight.exceptions.FlightInvalidOriginAndDestination;
+import com.example.Airport.flight.exceptions.FlightInvalidSeatsException;
+import com.example.Airport.flight.exceptions.FlightNotFoundException;
+import com.example.Airport.user.exceptions.ExistingUserException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -26,8 +29,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(AirportExistingUserException.class)
-    public ResponseEntity<Map<String, String>> handleAirportExistingUserException(AirportExistingUserException exception) {
+    @ExceptionHandler(ExistingUserException.class)
+    public ResponseEntity<Map<String, String>> handleAirportExistingUserException(ExistingUserException exception) {
         Map<String, String> errors = new HashMap<>();
         errors.put("error", exception.getMessage());
         return new ResponseEntity<>(errors, HttpStatus.CONFLICT);
@@ -50,6 +53,28 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AirportInvalidModificationException.class)
     public ResponseEntity<Map<String, String>> handleAirportInvalidModificationException(AirportInvalidModificationException exception) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error", exception.getMessage());
+        return new ResponseEntity<>(errors, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(FlightInvalidOriginAndDestination.class)
+    public ResponseEntity<Map<String, String>> handleFlightInvalidOriginAndDestination(FlightInvalidOriginAndDestination exception) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error", exception.getMessage());
+        return new ResponseEntity<>(errors, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(FlightNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleFlightNotFoundException(FlightNotFoundException exception) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error", exception.getMessage());
+        return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
+    }
+
+    //FlightInvalidSeats
+    @ExceptionHandler(FlightInvalidSeatsException.class)
+    public ResponseEntity<Map<String, String>> handleFlightInvalidSeatsException(FlightInvalidSeatsException exception) {
         Map<String, String> errors = new HashMap<>();
         errors.put("error", exception.getMessage());
         return new ResponseEntity<>(errors, HttpStatus.CONFLICT);

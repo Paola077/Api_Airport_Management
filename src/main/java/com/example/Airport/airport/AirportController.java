@@ -1,5 +1,6 @@
 package com.example.Airport.airport;
 
+import com.example.Airport.flight.FlightResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +14,12 @@ import java.util.stream.Collectors;
 public class AirportController {
 
     private final AirportService airportService;
+    private final AirportRepository airportRepository;
 
-    public AirportController(AirportService airportService) {
+    public AirportController(AirportService airportService,
+                             AirportRepository airportRepository) {
         this.airportService = airportService;
+        this.airportRepository = airportRepository;
     }
 
     @PostMapping
@@ -28,6 +32,12 @@ public class AirportController {
     public ResponseEntity<List<AirportResponse>> getAllAirports() {
        List<AirportResponse> airportResponseList = airportService.findAll();
        return new ResponseEntity<>(airportResponseList, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<AirportResponse> getAirportById(@PathVariable Long id) {
+        AirportResponse airportResponse = airportService.findById(id);
+        return new ResponseEntity<>(airportResponse, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")

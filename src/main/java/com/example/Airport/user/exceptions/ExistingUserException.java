@@ -4,8 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.CONFLICT)
-public class AirportExistingUserException extends RuntimeException {
-    public AirportExistingUserException(String message) {
+public class ExistingUserException extends RuntimeException {
+    public ExistingUserException(String message) {
         super(message);
     }
 }

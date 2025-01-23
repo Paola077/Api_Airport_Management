@@ -45,4 +45,11 @@ public class Flight {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private FlightStatus status;
+
+    public Flight(LocalDate date, LocalTime time, Integer availableSeats, Integer totalSeats, String status) {
+        this.date = date;
+        this.time = time;
+        this.availableSeats = availableSeats;
+        this.totalSeats = totalSeats;
+    }
 }
