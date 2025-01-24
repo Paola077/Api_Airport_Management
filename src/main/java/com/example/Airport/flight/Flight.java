@@ -2,12 +2,15 @@ package com.example.Airport.flight;
 
 import com.example.Airport.airport.Airport;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
@@ -30,11 +33,11 @@ public class Flight {
     @JoinColumn(name = "destination_id", nullable = false)
     private Airport destination;
 
-    @Column(nullable = false)
-    private LocalDate date;
+    @Column(name = "departure_date_time", nullable = false)
+    private LocalDateTime departureDateTime;
 
-    @Column(nullable = false)
-    private LocalTime time;
+    @Column(name = "arrival_date_time", nullable = false)
+    private LocalDateTime arrivalDateTime;
 
     @Column(nullable = false)
     private Integer availableSeats;
@@ -46,10 +49,11 @@ public class Flight {
     @Column(nullable = false)
     private FlightStatus status;
 
-    public Flight(LocalDate date, LocalTime time, Integer availableSeats, Integer totalSeats, String status) {
-        this.date = date;
-        this.time = time;
+    public Flight(LocalDateTime departureDateTime, LocalDateTime arrivalDateTime, Integer availableSeats, Integer totalSeats) {
+        this.departureDateTime = departureDateTime;
+        this.arrivalDateTime = arrivalDateTime;
         this.availableSeats = availableSeats;
         this.totalSeats = totalSeats;
     }
+
 }

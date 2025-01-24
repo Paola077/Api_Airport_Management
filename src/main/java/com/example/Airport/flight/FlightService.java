@@ -9,6 +9,7 @@ import com.example.Airport.flight.exceptions.FlightNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -44,15 +45,16 @@ public class FlightService {
         Airport destination = airportRepository.findById(flightRequest.destinationId())
                 .orElseThrow(() -> new FlightInvalidOriginAndDestination("Destination airport not found."));
 
-        boolean flightExists = flightRepository.existsByOriginAndDestinationAndDateAndTime(
+        List<Flight> exitingFlights = flightRepository.findByFilters(
                 flightRequest.originId(),
                 flightRequest.destinationId(),
-                flightRequest.date(),
-                flightRequest.time()
+                flightRequest.departureDateTime(),
+                flightRequest.arrivalDateTime(),
+                FlightStatus.ACTIVE
         );
 
-        if (flightExists) {
-            throw new FlightInvalidOriginAndDestination("A flight with the same origin, destination, date, and time already exists.");
+        if (!exitingFlights.isEmpty()) {
+            throw new FlightInvalidOriginAndDestination("A flight with the same origin, destination, departure and arrival DateTime already exists.");
         }
 
         Flight flight = FlightMapper.toEntity(flightRequest);
@@ -60,14 +62,14 @@ public class FlightService {
         flight.setDestination(destination);
         flight.setAvailableSeats(availableSeats);
         flight.setTotalSeats(totalSeats);
-        flight.setStatus(FlightStatus.valueOf(flightRequest.status().toUpperCase()));
+        flight.setStatus(FlightStatus.ACTIVE);
 
         Flight savedFlight = flightRepository.save(flight);
         return FlightMapper.toResponse(savedFlight);
     }
 
-    public List<FlightResponse> getFlights(Long originId, Long destinationId, LocalDate date) {
-        if (originId == null && destinationId == null && date == null) {
+    public List<FlightResponse> getFlights(Long originId, Long destinationId, LocalDateTime departureDateTime, LocalDateTime arrivalDateTime, String status) {
+        if (originId == null && destinationId == null && departureDateTime == null && arrivalDateTime == null && status == null) {
             List<Flight> allFlights = flightRepository.findAll();
             if (allFlights.isEmpty()) {
                 throw new FlightNotFoundException("There are no flights to show");
@@ -78,7 +80,9 @@ public class FlightService {
                     .collect(Collectors.toList());
         }
 
-        List<Flight> filteredFlights = flightRepository.findByFilters(originId, destinationId, date);
+        FlightStatus flightStatus = FlightStatus.valueOf(status.toUpperCase());
+
+        List<Flight> filteredFlights = flightRepository.findByFilters(originId, destinationId, departureDateTime, arrivalDateTime, flightStatus);
 
         if (filteredFlights.isEmpty()) {
             StringBuilder message = new StringBuilder("No flights found");
@@ -88,8 +92,14 @@ public class FlightService {
             if (destinationId != null) {
                 message.append(" and destination ID: ").append(destinationId);
             }
-            if (date != null) {
-                message.append(" on date: ").append(date);
+            if (departureDateTime != null) {
+                message.append(" departing at: ").append(departureDateTime);
+            }
+            if (arrivalDateTime != null) {
+                message.append(" arriving at: ").append(arrivalDateTime);
+            }
+            if (status != null) {
+                message.append(" status at: ").append(status);
             }
             throw new FlightNotFoundException(message.toString());
         }
@@ -110,35 +120,38 @@ public class FlightService {
         return FlightMapper.toResponse(flight);
     }
 
-    public List<FlightResponse> findFlights(Long originId, Long destinationId, LocalDate date) {
-        List<Flight> flights = flightRepository.findByFilters(originId, destinationId, date);
+    public List<FlightResponse> findFlights(Long originId, Long destinationId, LocalDateTime departureDateTime, LocalDateTime arrivalDateTime, FlightStatus status) {
+        List<Flight> flights = flightRepository.findByFilters(originId, destinationId, departureDateTime, arrivalDateTime, status);
         return flights.stream()
                 .map(FlightMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
     public FlightResponse updateFlight(Long id,FlightRequest flightRequest) {
-        Flight flight = flightRepository.findById(id)
-                .orElseThrow(() -> new FlightNotFoundException("Flight with ID " + id + " not found"));
+            Flight flight = flightRepository.findById(id)
+                    .orElseThrow(() -> new FlightNotFoundException("Flight with ID " + id + " not found"));
 
-        if (flightRequest.date() != null) {
-            flight.setDate(flightRequest.date());
-        }
-
-        if(flightRequest.time() != null) {
-            flight.setTime(flightRequest.time());
-        }
-
-        if (flightRequest.availableSeats() != null) {
-            if (flightRequest.availableSeats() > flight.getTotalSeats()) {
-                throw new FlightInvalidSeatsException("Available seats cannot exceed total seats");
+            if (flightRequest.departureDateTime() != null) {
+                flight.setDepartureDateTime(flightRequest.departureDateTime());
             }
-            flight.setAvailableSeats(flightRequest.availableSeats());
-        }
 
-        Flight updatedFlight = flightRepository.save(flight);
-        return FlightMapper.toResponse(updatedFlight);
-    }
+            if (flightRequest.arrivalDateTime() != null) {
+                if (flightRequest.arrivalDateTime().isBefore(flight.getDepartureDateTime())) {
+                    throw new IllegalArgumentException("Arrival date and time must be after departure date and time");
+                }
+                flight.setArrivalDateTime(flightRequest.arrivalDateTime());
+            }
+
+            if (flightRequest.availableSeats() != null) {
+                if (flightRequest.availableSeats() > flight.getTotalSeats()) {
+                    throw new FlightInvalidSeatsException("Available seats cannot exceed total seats");
+                }
+                flight.setAvailableSeats(flightRequest.availableSeats());
+            }
+
+            Flight updatedFlight = flightRepository.save(flight);
+            return FlightMapper.toResponse(updatedFlight);
+        }
 
     public void deleteFlight(Long id) {
         Flight flight = flightRepository.findById(id)

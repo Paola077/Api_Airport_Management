@@ -1,32 +1,27 @@
 package com.example.Airport.flight;
 
 import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 public record FlightRequest(
         Long originId,
 
         Long destinationId,
 
-        @NotNull(message = "the field date cannot be null")
-        @Future(message = "The date cannot be previous to actual date")
-        LocalDate date,
+        @NotNull(message = "Departure date and time cannot be null.")
+        @Future(message = "Departure date and time must be in the future.")
+        LocalDateTime departureDateTime,
 
-        @NotNull(message = "the field time cannot be null")
-        LocalTime time,
+        @NotNull(message = "Arrival date and time cannot be null.")
+        @Future(message = "Arrival date and time must be in the future.")
+        LocalDateTime arrivalDateTime,
 
         @NotNull(message = "the field availableSeats cannot be null")
         Integer availableSeats,
 
         @NotNull(message = "the field totalSeats cannot be null")
-        Integer totalSeats,
-
-        @NotNull(message = "the field status cannot be null")
-        @NotEmpty(message = "the field status cannot be empty")
-        String status
+        Integer totalSeats
 ) {
 }

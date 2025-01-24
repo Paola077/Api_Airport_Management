@@ -4,8 +4,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -29,9 +28,11 @@ public class FlightController {
     public ResponseEntity<List<FlightResponse>> getFlights(
             @RequestParam(required = false) Long originId,
             @RequestParam(required = false) Long destinationId,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime departureDateTime,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime arrivalDateTime,
+            @RequestParam(required = false) String status) {
 
-        List<FlightResponse> flights = flightService.getFlights(originId, destinationId, date);
+        List<FlightResponse> flights = flightService.getFlights(originId, destinationId, departureDateTime, arrivalDateTime, status);
         return ResponseEntity.ok(flights);
     }
 
