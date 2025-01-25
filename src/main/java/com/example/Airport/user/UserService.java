@@ -1,6 +1,6 @@
 package com.example.Airport.user;
 
-import com.example.Airport.user.exceptions.ExistingUserException;
+import com.example.Airport.user.exceptions.UserAlreadyExistException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -17,7 +17,7 @@ public class UserService {
     public UserResponse createUser(UserRequest userRequest) {
         Optional<User> existUser = userRepository.findByEmail(userRequest.email());
         if(existUser.isPresent())
-            throw new ExistingUserException("User already exist with this email" + userRequest.email());
+            throw new UserAlreadyExistException("User already exist with this email" + userRequest.email());
 
         User user = UserMapper.toEntity(userRequest);
         User savedUser = userRepository.save(user);

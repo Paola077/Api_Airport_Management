@@ -22,6 +22,8 @@ public record FlightRequest(
         Integer availableSeats,
 
         @NotNull(message = "the field totalSeats cannot be null")
-        Integer totalSeats
+        Integer totalSeats,
+
+        String status
 ) {
 }

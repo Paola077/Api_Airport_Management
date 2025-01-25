@@ -42,7 +42,7 @@ public class AirportService {
     public List<AirportResponse> findAll() {
         List<Airport> airportList = airportRepository.findAll();
 
-        if (airportList.isEmpty()) {
+        if(airportList.isEmpty()) {
             throw new AirportNotFoundException("There is not airports to show");
         }
 

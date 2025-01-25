@@ -36,9 +36,6 @@ public class FlightService {
             throw new FlightInvalidSeatsException("Available seats cannot exceed total seats.");
         }
 
-        Integer availableSeats = flightRequest.availableSeats();
-        Integer totalSeats = flightRequest.totalSeats();
-
         Airport origin = airportRepository.findById(flightRequest.originId())
                 .orElseThrow(() -> new FlightInvalidOriginAndDestination("Origin airport not found."));
 
@@ -57,12 +54,7 @@ public class FlightService {
             throw new FlightInvalidOriginAndDestination("A flight with the same origin, destination, departure and arrival DateTime already exists.");
         }
 
-        Flight flight = FlightMapper.toEntity(flightRequest);
-        flight.setOrigin(origin);
-        flight.setDestination(destination);
-        flight.setAvailableSeats(availableSeats);
-        flight.setTotalSeats(totalSeats);
-        flight.setStatus(FlightStatus.ACTIVE);
+        Flight flight = FlightMapper.toEntity(flightRequest, origin, destination);
 
         Flight savedFlight = flightRepository.save(flight);
         return FlightMapper.toResponse(savedFlight);
@@ -98,9 +90,7 @@ public class FlightService {
             if (arrivalDateTime != null) {
                 message.append(" arriving at: ").append(arrivalDateTime);
             }
-            if (status != null) {
-                message.append(" status at: ").append(status);
-            }
+            message.append(" status at: ").append(status);
             throw new FlightNotFoundException(message.toString());
         }
 
@@ -157,5 +147,6 @@ public class FlightService {
         Flight flight = flightRepository.findById(id)
                 .orElseThrow(() -> new FlightNotFoundException("Flight with ID " + id + " not found."));
         flightRepository.delete(flight);
+        // TODO validación de no eliminar vuelo si hay reservas pendientes
     }
 }

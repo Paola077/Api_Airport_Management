@@ -49,11 +49,13 @@ public class Flight {
     @Column(nullable = false)
     private FlightStatus status;
 
-    public Flight(LocalDateTime departureDateTime, LocalDateTime arrivalDateTime, Integer availableSeats, Integer totalSeats) {
+    public Flight(Airport origin, Airport destination, LocalDateTime departureDateTime, LocalDateTime arrivalDateTime, Integer availableSeats, Integer totalSeats, FlightStatus status) {
+        this.origin = origin;
+        this.destination = destination;
         this.departureDateTime = departureDateTime;
         this.arrivalDateTime = arrivalDateTime;
         this.availableSeats = availableSeats;
         this.totalSeats = totalSeats;
+        this.status = status;
     }
-
 }

@@ -1,13 +1,11 @@
 package com.example.Airport.airport;
 
-import com.example.Airport.flight.FlightResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("airports")
@@ -49,7 +47,7 @@ public class AirportController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteTrend(@PathVariable Long id) {
+    public ResponseEntity<String> deleteAirport(@PathVariable Long id) {
         airportService.deleteAirport(id);
         return new ResponseEntity<>("The airport has been eliminated", HttpStatus.OK);
     }

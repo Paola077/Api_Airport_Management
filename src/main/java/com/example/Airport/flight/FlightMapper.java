@@ -1,13 +1,18 @@
 package com.example.Airport.flight;
 
+import com.example.Airport.airport.Airport;
+
 public class FlightMapper {
 
-    public static Flight toEntity(FlightRequest flightRequest) {
+    public static Flight toEntity(FlightRequest flightRequest, Airport originAirport, Airport destinationAirport) {
         return new Flight(
-           flightRequest.departureDateTime(),
-           flightRequest.arrivalDateTime(),
-           flightRequest.availableSeats(),
-           flightRequest.totalSeats()
+                originAirport,
+                destinationAirport,
+                flightRequest.departureDateTime(),
+                flightRequest.arrivalDateTime(),
+                flightRequest.availableSeats(),
+                flightRequest.totalSeats(),
+                FlightStatus.valueOf(flightRequest.status().toUpperCase())
         );
     }
 
