@@ -6,10 +6,11 @@ import com.example.Airport.airport.exceptions.AirportNotFoundException;
 import com.example.Airport.flight.exceptions.FlightInvalidOriginAndDestination;
 import com.example.Airport.flight.exceptions.FlightInvalidSeatsException;
 import com.example.Airport.flight.exceptions.FlightNotFoundException;
+import com.example.Airport.profile.exceptions.ProfileAlreadyExistException;
 import com.example.Airport.reservation.exceptions.FlightAlreadyDepartedException;
 import com.example.Airport.reservation.exceptions.NotAvailableSeatsReservationException;
 import com.example.Airport.reservation.exceptions.ReservationNotFoundException;
-import com.example.Airport.reservation.exceptions.UserNotfoundException;
+import com.example.Airport.reservation.exceptions.UserNotFoundException;
 import com.example.Airport.user.exceptions.UserAlreadyExistException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,8 +41,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(UserNotfoundException.class)
-    public ResponseEntity<Map<String, String>> handleUserNotfound(UserNotfoundException exception) {
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleUserNotFound(UserNotFoundException exception) {
         Map<String, String> errors = new HashMap<>();
         errors.put("error", exception.getMessage());
         return new ResponseEntity<>(errors, HttpStatus.CONFLICT);
@@ -106,6 +107,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(FlightAlreadyDepartedException.class)
     public ResponseEntity<Map<String, String>> handleFlightAlreadyDepartedException(FlightAlreadyDepartedException exception) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error", exception.getMessage());
+        return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
+    }
+
+    //ProfileAlreadyExistException
+    @ExceptionHandler(ProfileAlreadyExistException.class)
+    public ResponseEntity<Map<String, String>> handleProfileAlreadyExistException(ProfileAlreadyExistException exception) {
         Map<String, String> errors = new HashMap<>();
         errors.put("error", exception.getMessage());
         return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);

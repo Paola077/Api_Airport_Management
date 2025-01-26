@@ -1,5 +1,6 @@
 package com.example.Airport.user;
 
+import com.example.Airport.profile.UserProfileResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +20,8 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest userRequest) {
-        UserResponse userResponse = userService.createUser(userRequest);
-        return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
+    public ResponseEntity<UserProfileResponse> createUser(@Valid @RequestBody UserRequest userRequest) {
+        UserProfileResponse userProfileResponse = userService.createUser(userRequest);
+        return new ResponseEntity<>(userProfileResponse, HttpStatus.CREATED);
     }
 }

@@ -7,7 +7,7 @@ import com.example.Airport.flight.exceptions.FlightNotFoundException;
 import com.example.Airport.reservation.exceptions.FlightAlreadyDepartedException;
 import com.example.Airport.reservation.exceptions.NotAvailableSeatsReservationException;
 import com.example.Airport.reservation.exceptions.ReservationNotFoundException;
-import com.example.Airport.reservation.exceptions.UserNotfoundException;
+import com.example.Airport.reservation.exceptions.UserNotFoundException;
 import com.example.Airport.user.User;
 import com.example.Airport.user.UserRepository;
 import org.springframework.stereotype.Service;
@@ -42,7 +42,7 @@ public class ReservationService {
         flightRepository.save(flight);
 
         User user = userRepository.findById(reservationRequest.userId())
-                .orElseThrow(()-> new UserNotfoundException("User not found."));
+                .orElseThrow(()-> new UserNotFoundException("User not found."));
 
         Reservation reservation = ReservationMapper.toEntity(reservationRequest, user, flight, LocalDateTime.now().plusMinutes(1));
 
