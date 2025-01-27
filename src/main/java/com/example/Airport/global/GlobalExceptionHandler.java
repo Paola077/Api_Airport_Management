@@ -7,6 +7,7 @@ import com.example.Airport.flight.exceptions.FlightInvalidOriginAndDestination;
 import com.example.Airport.flight.exceptions.FlightInvalidSeatsException;
 import com.example.Airport.flight.exceptions.FlightNotFoundException;
 import com.example.Airport.profile.exceptions.ProfileAlreadyExistException;
+import com.example.Airport.profile.exceptions.ProfileNotFoundException;
 import com.example.Airport.reservation.exceptions.FlightAlreadyDepartedException;
 import com.example.Airport.reservation.exceptions.NotAvailableSeatsReservationException;
 import com.example.Airport.reservation.exceptions.ReservationNotFoundException;
@@ -109,12 +110,18 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleFlightAlreadyDepartedException(FlightAlreadyDepartedException exception) {
         Map<String, String> errors = new HashMap<>();
         errors.put("error", exception.getMessage());
-        return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errors, HttpStatus.CONFLICT);
     }
 
-    //ProfileAlreadyExistException
     @ExceptionHandler(ProfileAlreadyExistException.class)
     public ResponseEntity<Map<String, String>> handleProfileAlreadyExistException(ProfileAlreadyExistException exception) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error", exception.getMessage());
+        return new ResponseEntity<>(errors, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(ProfileNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleProfileNotFoundException(ProfileNotFoundException exception) {
         Map<String, String> errors = new HashMap<>();
         errors.put("error", exception.getMessage());
         return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
