@@ -6,6 +6,8 @@ import com.example.Airport.airport.exceptions.AirportNotFoundException;
 import com.example.Airport.flight.exceptions.FlightInvalidOriginAndDestination;
 import com.example.Airport.flight.exceptions.FlightInvalidSeatsException;
 import com.example.Airport.flight.exceptions.FlightNotFoundException;
+import com.example.Airport.profile.exceptions.FlightInvalidDeleteException;
+import com.example.Airport.reservation.ReservationRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -18,12 +20,13 @@ import java.util.stream.Collectors;
 public class FlightService {
 
     private final FlightRepository flightRepository;
-
     private final AirportRepository airportRepository;
+    private final ReservationRepository reservationRepository;
 
-    public FlightService(FlightRepository flightRepository, AirportRepository airportRepository) {
+    public FlightService(FlightRepository flightRepository, AirportRepository airportRepository, ReservationRepository reservationRepository) {
         this.flightRepository = flightRepository;
         this.airportRepository = airportRepository;
+        this.reservationRepository = reservationRepository;
     }
 
     public FlightResponse createFlight (FlightRequest flightRequest) {
@@ -146,7 +149,11 @@ public class FlightService {
     public void deleteFlight(Long id) {
         Flight flight = flightRepository.findById(id)
                 .orElseThrow(() -> new FlightNotFoundException("Flight with ID " + id + " not found."));
+
+        if (reservationRepository.existsByFlightId(id)) {
+            throw new FlightInvalidDeleteException("Cannot delete flight with ID " + id + " as it has associated reservations");
+        }
+
         flightRepository.delete(flight);
-        // TODO validación de no eliminar vuelo si hay reservas pendientes
     }
 }

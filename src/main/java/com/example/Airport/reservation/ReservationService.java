@@ -44,7 +44,7 @@ public class ReservationService {
         User user = userRepository.findById(reservationRequest.userId())
                 .orElseThrow(()-> new UserNotFoundException("User not found."));
 
-        Reservation reservation = ReservationMapper.toEntity(reservationRequest, user, flight, LocalDateTime.now().plusMinutes(1));
+        Reservation reservation = ReservationMapper.toEntity(reservationRequest, user, flight, LocalDateTime.now().plusMinutes(15));
 
         Reservation savedReservation = reservationRepository.save(reservation);
 

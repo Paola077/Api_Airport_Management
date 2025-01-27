@@ -6,6 +6,7 @@ import com.example.Airport.airport.exceptions.AirportNotFoundException;
 import com.example.Airport.flight.exceptions.FlightInvalidOriginAndDestination;
 import com.example.Airport.flight.exceptions.FlightInvalidSeatsException;
 import com.example.Airport.flight.exceptions.FlightNotFoundException;
+import com.example.Airport.profile.exceptions.FlightInvalidDeleteException;
 import com.example.Airport.profile.exceptions.ProfileAlreadyExistException;
 import com.example.Airport.profile.exceptions.ProfileNotFoundException;
 import com.example.Airport.reservation.exceptions.FlightAlreadyDepartedException;
@@ -108,6 +109,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(FlightAlreadyDepartedException.class)
     public ResponseEntity<Map<String, String>> handleFlightAlreadyDepartedException(FlightAlreadyDepartedException exception) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error", exception.getMessage());
+        return new ResponseEntity<>(errors, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(FlightInvalidDeleteException.class)
+    public ResponseEntity<Map<String, String>> handleFlightInvalidDeleteException(FlightInvalidDeleteException exception) {
         Map<String, String> errors = new HashMap<>();
         errors.put("error", exception.getMessage());
         return new ResponseEntity<>(errors, HttpStatus.CONFLICT);
