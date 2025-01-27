@@ -22,7 +22,7 @@ public class ReservationHandler {
         this.flightRepository = flightRepository;
     }
 
-    @Scheduled(fixedRate = 60000) // Cada minuto
+    @Scheduled(fixedRate = 60000) // Cada minuto se borran las reservas expiradas
     public void releaseExpiredReservations() {
         LocalDateTime now = LocalDateTime.now();
         List<Reservation> expiredReservations = reservationRepository.findAll()
@@ -36,7 +36,7 @@ public class ReservationHandler {
             flightRepository.save(flight);
             reservationRepository.delete(reservation);
 
-            // TODO se tienen que borrar las reservas que tengan el status pending
+            // TODO se tienen que borrar las reservas que solo tengan el status pending
         }
     }
 
@@ -55,6 +55,4 @@ public class ReservationHandler {
     }
 
     //TODO Hacer tarea que confirme que un vuelo esta completo y lo ponga como inactivo y si hay reservas disponibles que ponga activo de nuevo
-
-    //TODO
 }

@@ -1,5 +1,6 @@
 package com.example.Airport.reservation;
 
+import com.example.Airport.user.UserWithReservationsResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,12 +12,9 @@ import java.util.List;
 public class ReservationController {
 
     private final ReservationService reservationService;
-    private final ReservationRepository reservationRepository;
 
-    public ReservationController(ReservationService reservationService,
-                                 ReservationRepository reservationRepository) {
+    public ReservationController(ReservationService reservationService) {
         this.reservationService = reservationService;
-        this.reservationRepository = reservationRepository;
     }
 
     @PostMapping
@@ -41,6 +39,18 @@ public class ReservationController {
     public ResponseEntity<ReservationResponse> getReservationById(@PathVariable Long id) {
         ReservationResponse reservationResponse = reservationService.findById(id);
         return new ResponseEntity<>(reservationResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/flight/{flightId}")
+    public ResponseEntity<List<ReservationResponse>> getReservationsByFlightId(@PathVariable Long flightId) {
+        List<ReservationResponse> reservations = reservationService.getReservationsByFlightId(flightId);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<UserWithReservationsResponse> getReservationByUserId(@PathVariable Long userId) {
+        UserWithReservationsResponse reservations = reservationService.getReservationsByUserId(userId);
+        return ResponseEntity.ok(reservations);
     }
 
     @DeleteMapping("/{id}")

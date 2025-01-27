@@ -9,7 +9,9 @@ import com.example.Airport.reservation.exceptions.NotAvailableSeatsReservationEx
 import com.example.Airport.reservation.exceptions.ReservationNotFoundException;
 import com.example.Airport.reservation.exceptions.UserNotFoundException;
 import com.example.Airport.user.User;
+import com.example.Airport.user.UserMapper;
 import com.example.Airport.user.UserRepository;
+import com.example.Airport.user.UserWithReservationsResponse;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -95,6 +97,29 @@ public class ReservationService {
         return ReservationMapper.toResponse(reservation);
     }
 
+    public List<ReservationResponse> getReservationsByFlightId(Long flightId) {
+        List<Reservation> reservations = reservationRepository.findAllByFlightId(flightId);
+        if (reservations.isEmpty()) {
+            throw new ReservationNotFoundException("No reservations found for flight ID: " + flightId);
+        }
+        return reservations.stream()
+                .map(ReservationMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    public UserWithReservationsResponse getReservationsByUserId(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(()-> new ReservationNotFoundException("No reservations found for user ID: " + userId));
+
+        List<Reservation> reservations = reservationRepository.findAllByUserId(userId);
+
+        List<ReservationResponse> reservationResponses = reservations.stream()
+                .map(ReservationMapper::toResponse)
+                .toList();
+
+        return UserMapper.toUserWithReservations(user, reservationResponses);
+    }
+
     public void deleteReservation(Long id) {
         Reservation existingReservation = reservationRepository.findById(id)
                 .orElseThrow(() -> new ReservationNotFoundException("Reservation with ID " + id + " not found"));
@@ -103,4 +128,6 @@ public class ReservationService {
 
         //TODO el usuario tiene que estar autenticado para eliminar la reserva
     }
+
+
 }

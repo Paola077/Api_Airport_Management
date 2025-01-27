@@ -5,9 +5,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
     @Query("SELECT COUNT(r) > 0 FROM Reservation r WHERE r.flight.id = :flightId AND r.reservationExpirationTime > :currentTime")
     boolean areSeatsBlockedForFlight(@Param("flightId") Long flightId, @Param("currentTime") LocalDateTime currentTime);
     boolean existsByFlightId(Long flightId);
+    List<Reservation> findAllByFlightId(Long flightId);
+    List<Reservation> findAllByUserId(Long userId);
 }
