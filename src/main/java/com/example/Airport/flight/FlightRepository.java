@@ -26,4 +26,6 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
             @Param("arrivalDateTime") LocalDateTime arrivalDateTime,
             @Param("status") FlightStatus status
     );
+
+    List<Flight> findAllByStatus(FlightStatus flightStatus); //Méthod para buscar vuelos en estado activo
 }

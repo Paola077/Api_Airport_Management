@@ -6,13 +6,11 @@ import com.example.Airport.airport.exceptions.AirportNotFoundException;
 import com.example.Airport.flight.exceptions.FlightInvalidOriginAndDestination;
 import com.example.Airport.flight.exceptions.FlightInvalidSeatsException;
 import com.example.Airport.flight.exceptions.FlightNotFoundException;
+import com.example.Airport.flight.exceptions.InvalidStatusException;
 import com.example.Airport.profile.exceptions.FlightInvalidDeleteException;
 import com.example.Airport.profile.exceptions.ProfileAlreadyExistException;
 import com.example.Airport.profile.exceptions.ProfileNotFoundException;
-import com.example.Airport.reservation.exceptions.FlightAlreadyDepartedException;
-import com.example.Airport.reservation.exceptions.NotAvailableSeatsReservationException;
-import com.example.Airport.reservation.exceptions.ReservationNotFoundException;
-import com.example.Airport.reservation.exceptions.UserNotFoundException;
+import com.example.Airport.reservation.exceptions.*;
 import com.example.Airport.user.exceptions.UserAlreadyExistException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -93,6 +91,27 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(FlightAlreadyDepartedException.class)
+    public ResponseEntity<Map<String, String>> handleFlightAlreadyDepartedException(FlightAlreadyDepartedException exception) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error", exception.getMessage());
+        return new ResponseEntity<>(errors, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(FlightInvalidDeleteException.class)
+    public ResponseEntity<Map<String, String>> handleFlightInvalidDeleteException(FlightInvalidDeleteException exception) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error", exception.getMessage());
+        return new ResponseEntity<>(errors, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(InvalidStatusException.class)
+    public ResponseEntity<Map<String, String>> handleInvalidStatusException(InvalidStatusException exception) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error", exception.getMessage());
+        return new ResponseEntity<>(errors, HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(NotAvailableSeatsReservationException.class)
     public ResponseEntity<Map<String, String>> handleNotAvailableSeatsReservationException(NotAvailableSeatsReservationException exception) {
         Map<String, String> errors = new HashMap<>();
@@ -107,19 +126,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(FlightAlreadyDepartedException.class)
-    public ResponseEntity<Map<String, String>> handleFlightAlreadyDepartedException(FlightAlreadyDepartedException exception) {
+    @ExceptionHandler(ReservationInvalidStateException.class)
+    public ResponseEntity<Map<String, String>> handleReservationInvalidStateException(ReservationInvalidStateException exception) {
         Map<String, String> errors = new HashMap<>();
         errors.put("error", exception.getMessage());
         return new ResponseEntity<>(errors, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(FlightInvalidDeleteException.class)
-    public ResponseEntity<Map<String, String>> handleFlightInvalidDeleteException(FlightInvalidDeleteException exception) {
-        Map<String, String> errors = new HashMap<>();
-        errors.put("error", exception.getMessage());
-        return new ResponseEntity<>(errors, HttpStatus.CONFLICT);
-    }
 
     @ExceptionHandler(ProfileAlreadyExistException.class)
     public ResponseEntity<Map<String, String>> handleProfileAlreadyExistException(ProfileAlreadyExistException exception) {

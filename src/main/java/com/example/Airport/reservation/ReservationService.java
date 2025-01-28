@@ -4,10 +4,7 @@ package com.example.Airport.reservation;
 import com.example.Airport.flight.Flight;
 import com.example.Airport.flight.FlightRepository;
 import com.example.Airport.flight.exceptions.FlightNotFoundException;
-import com.example.Airport.reservation.exceptions.FlightAlreadyDepartedException;
-import com.example.Airport.reservation.exceptions.NotAvailableSeatsReservationException;
-import com.example.Airport.reservation.exceptions.ReservationNotFoundException;
-import com.example.Airport.reservation.exceptions.UserNotFoundException;
+import com.example.Airport.reservation.exceptions.*;
 import com.example.Airport.user.User;
 import com.example.Airport.user.UserMapper;
 import com.example.Airport.user.UserRepository;
@@ -40,13 +37,17 @@ public class ReservationService {
             throw new NotAvailableSeatsReservationException("Not enough seats available");
         }
 
+        if(flight.getDepartureDateTime().isBefore(LocalDateTime.now())) {
+            throw new FlightAlreadyDepartedException("Flight has already departed.");
+        }
+
         flight.setAvailableSeats(flight.getAvailableSeats() - reservationRequest.seatsReserved());
         flightRepository.save(flight);
 
         User user = userRepository.findById(reservationRequest.userId())
                 .orElseThrow(()-> new UserNotFoundException("User not found."));
 
-        Reservation reservation = ReservationMapper.toEntity(reservationRequest, user, flight, LocalDateTime.now().plusMinutes(15));
+        Reservation reservation = ReservationMapper.toEntity(reservationRequest, user, flight, LocalDateTime.now().plusMinutes(2));
 
         Reservation savedReservation = reservationRepository.save(reservation);
 
@@ -58,7 +59,7 @@ public class ReservationService {
                 .orElseThrow(() -> new ReservationNotFoundException("Reservation Not Found."));
 
         if (!reservation.getReservationStatus().equals(ReservationStatus.PENDING)) {
-            throw new IllegalStateException("Reservation is not in PENDING status.");
+            throw new ReservationInvalidStateException("Reservation is not in PENDING status.");
         }
 
         Flight flight = reservation.getFlight();
@@ -121,10 +122,16 @@ public class ReservationService {
     }
 
     public void deleteReservation(Long id) {
-        Reservation existingReservation = reservationRepository.findById(id)
+        Reservation reservation = reservationRepository.findById(id)
                 .orElseThrow(() -> new ReservationNotFoundException("Reservation with ID " + id + " not found"));
 
-        reservationRepository.delete(existingReservation);
+        Flight flight = reservation.getFlight();
+
+        // Restaurar las plazas disponibles
+        flight.setAvailableSeats(flight.getAvailableSeats() + reservation.getSeatsReserved());
+
+        flightRepository.save(flight); // Guardar el vuelo actualizado
+        reservationRepository.delete(reservation); // Eliminar la reserva
 
         //TODO el usuario tiene que estar autenticado para eliminar la reserva
     }

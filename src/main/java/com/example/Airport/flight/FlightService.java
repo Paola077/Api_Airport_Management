@@ -6,8 +6,11 @@ import com.example.Airport.airport.exceptions.AirportNotFoundException;
 import com.example.Airport.flight.exceptions.FlightInvalidOriginAndDestination;
 import com.example.Airport.flight.exceptions.FlightInvalidSeatsException;
 import com.example.Airport.flight.exceptions.FlightNotFoundException;
+import com.example.Airport.flight.exceptions.InvalidStatusException;
 import com.example.Airport.profile.exceptions.FlightInvalidDeleteException;
 import com.example.Airport.reservation.ReservationRepository;
+import com.example.Airport.reservation.exceptions.FlightAlreadyDepartedException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -15,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 
 @Service
 public class FlightService {
@@ -60,6 +64,7 @@ public class FlightService {
         Flight flight = FlightMapper.toEntity(flightRequest, origin, destination);
 
         Flight savedFlight = flightRepository.save(flight);
+        flight.setStatus(FlightStatus.ACTIVE);
         return FlightMapper.toResponse(savedFlight);
     }
 
@@ -73,6 +78,10 @@ public class FlightService {
             return allFlights.stream()
                     .map(FlightMapper::toResponse)
                     .collect(Collectors.toList());
+        }
+
+        if (status == null) {
+            throw new InvalidStatusException("Status cannot be null");
         }
 
         FlightStatus flightStatus = FlightStatus.valueOf(status.toUpperCase());
@@ -130,7 +139,7 @@ public class FlightService {
 
             if (flightRequest.arrivalDateTime() != null) {
                 if (flightRequest.arrivalDateTime().isBefore(flight.getDepartureDateTime())) {
-                    throw new IllegalArgumentException("Arrival date and time must be after departure date and time");
+                    throw new FlightAlreadyDepartedException("Arrival date and time must be after departure date and time");
                 }
                 flight.setArrivalDateTime(flightRequest.arrivalDateTime());
             }
