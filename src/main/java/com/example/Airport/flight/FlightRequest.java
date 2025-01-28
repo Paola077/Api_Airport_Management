@@ -6,8 +6,10 @@ import java.time.LocalDateTime;
 
 
 public record FlightRequest(
+        @NotNull(message = "Origin Id cannot be null.")
         Long originId,
 
+        @NotNull(message = "Destination Id cannot be null.")
         Long destinationId,
 
         @NotNull(message = "Departure date and time cannot be null.")
@@ -24,6 +26,7 @@ public record FlightRequest(
         @NotNull(message = "the field totalSeats cannot be null")
         Integer totalSeats,
 
+        @NotNull(message = "the field Status cannot be null")
         String status
 ) {
 }

@@ -12,12 +12,9 @@ import java.util.List;
 public class AirportController {
 
     private final AirportService airportService;
-    private final AirportRepository airportRepository;
 
-    public AirportController(AirportService airportService,
-                             AirportRepository airportRepository) {
+    public AirportController(AirportService airportService) {
         this.airportService = airportService;
-        this.airportRepository = airportRepository;
     }
 
     @PostMapping

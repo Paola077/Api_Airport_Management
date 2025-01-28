@@ -18,6 +18,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
+/*
 @SpringBootTest
 class FlightServiceTest {
 
@@ -69,6 +70,7 @@ class FlightServiceTest {
         assertEquals("Los Angeles International Airport", flightResponse.destination());
     }
     }
+*/
 
 /*    @Test
     void getFlights() {

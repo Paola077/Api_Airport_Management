@@ -44,7 +44,7 @@ public class FlightController {
 
     @PutMapping("/{id}")
     public ResponseEntity<FlightResponse> updateFlight(@PathVariable Long id,
-                                                       @RequestBody FlightRequest flightRequest) {
+                                                       @Valid @RequestBody FlightRequest flightRequest) {
         FlightResponse updateFlight = flightService.updateFlight(id, flightRequest);
         return ResponseEntity.ok(updateFlight);
     }

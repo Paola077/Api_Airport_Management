@@ -83,8 +83,6 @@ public class ReservationService {
         return reservationList.stream()
                 .map(ReservationMapper::toResponse)
                 .collect(Collectors.toList());
-
-        // TODO implementar busqueda de reservas por id de usuario y mostrar flight details
     }
 
     public ReservationResponse findById(Long id) {
@@ -108,6 +106,7 @@ public class ReservationService {
                 .collect(Collectors.toList());
     }
 
+    // Este será manejado por el admin
     public UserWithReservationsResponse getReservationsByUserId(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new ReservationNotFoundException("No reservations found for user ID: " + userId));
@@ -120,6 +119,8 @@ public class ReservationService {
 
         return UserMapper.toUserWithReservations(user, reservationResponses);
     }
+
+
 
     public void deleteReservation(Long id) {
         Reservation reservation = reservationRepository.findById(id)

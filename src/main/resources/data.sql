@@ -1,9 +1,10 @@
-INSERT INTO users (username, email, password) VALUES
-('John Doe', 'john.doe@example.com', 'password123'),
-('Jane Smith', 'jane.smith@example.com', 'password123'),
-('Admin User', 'admin@example.com', 'adminpassword'),
-('Alice Brown', 'alice.brown@example.com', 'password123'),
-('Bob White', 'bob.white@example.com', 'password123');
+INSERT INTO users (username, email, password)
+VALUES
+    ('John Doe', 'john.doe@example.com', 'password123'),
+    ('Jane Smith', 'jane.smith@example.com', 'password123'),
+    ('Admin User', 'admin@example.com', 'adminpassword'),
+    ('Alice Brown', 'alice.brown@example.com', 'password123'),
+    ('Bob White', 'bob.white@example.com', 'password123');
 
 INSERT INTO airport (code, name, location) VALUES
 ('JFK', 'John F. Kennedy International Airport', 'New York, USA'),

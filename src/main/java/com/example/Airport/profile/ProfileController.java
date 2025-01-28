@@ -29,7 +29,7 @@ public class ProfileController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<ProfileResponse> getProfileByEmail(@RequestParam String email) {
+    public ResponseEntity<ProfileResponse> getProfileByEmail(@PathVariable String email) {
         ProfileResponse profile = profileService.getProfileByEmail(email);
         return ResponseEntity.ok(profile);
     }
