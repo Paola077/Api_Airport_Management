@@ -1,3 +1,6 @@
+INSERT INTO roles (id_role, role_name) VALUES (default, 'ROLE_USER');
+INSERT INTO roles (id_role, role_name) VALUES (default, 'ROLE_ADMIN');
+
 INSERT INTO users (username, email, password)
 VALUES
     ('John Doe', 'john.doe@example.com', 'password123'),

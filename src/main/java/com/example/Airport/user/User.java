@@ -1,10 +1,14 @@
 package com.example.Airport.user;
 
+import com.example.Airport.role.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Set;
+
 
 @Entity
 @Getter
@@ -26,6 +30,10 @@ public class User {
     
     @Column(length = 255, name= "password", nullable = false)
     private String password;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "role_users", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "id_role"))
+    Set<Role> roles;
 
     public User(String username, String email, String password) {
         this.username = username;
