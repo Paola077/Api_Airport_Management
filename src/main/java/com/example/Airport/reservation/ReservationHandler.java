@@ -66,19 +66,13 @@ public class ReservationHandler {
         LocalDateTime now = LocalDateTime.now();
 
         for (Flight flight : activeFlights) {
-            int totalSeats = flight.getTotalSeats();
-            int confirmedSeats = reservationRepository.countConfirmedSeatsByFlightId(flight.getId());
-
-            log.info("Flight ID: {}, Total Seats: {}, Confirmed Seats: {}", flight.getId(), totalSeats, confirmedSeats);
 
             if (flight.getDepartureDateTime().isBefore(now) && flight.getStatus() != FlightStatus.INACTIVE) {
-                log.info("Changing Flight ID: {} to INACTIVE (Flight has departed)", flight.getId());
                 flight.setStatus(FlightStatus.INACTIVE);
                 flightRepository.save(flight);
             }
 
             if (flight.getAvailableSeats() == 0 && flight.getStatus() != FlightStatus.INACTIVE) {
-                log.info("Changing Flight ID: {} to INACTIVE", flight.getId());
                 flight.setStatus(FlightStatus.INACTIVE);
                 flightRepository.save(flight);
             }

@@ -16,8 +16,8 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
     @Query("SELECT f FROM Flight f " +
             "WHERE (:originId IS NULL OR f.origin.id = :originId) " +
             "AND (:destinationId IS NULL OR f.destination.id = :destinationId) " +
-            "AND (:departureDateTime IS NULL OR f.departureDateTime = :departureDateTime) " +
-            "AND (:arrivalDateTime IS NULL OR f.arrivalDateTime = :arrivalDateTime)" +
+            "AND (CAST(:departureDateTime AS TIMESTAMP) IS NULL OR f.departureDateTime = :departureDateTime) " +
+            "AND (CAST(:arrivalDateTime AS TIMESTAMP) IS NULL OR f.arrivalDateTime = :arrivalDateTime)" +
             "AND (:status IS NULL OR f.status = :status)")
     List<Flight> findByFilters(
             @Param("originId") Long originId,
@@ -26,6 +26,4 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
             @Param("arrivalDateTime") LocalDateTime arrivalDateTime,
             @Param("status") FlightStatus status
     );
-
-    List<Flight> findAllByStatus(FlightStatus flightStatus); //Méthod para buscar vuelos en estado activo
 }

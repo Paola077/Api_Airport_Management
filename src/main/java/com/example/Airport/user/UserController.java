@@ -1,16 +1,14 @@
 package com.example.Airport.user;
-
-import com.example.Airport.profile.UserProfileResponse;
-import jakarta.validation.Valid;
+import com.example.Airport.airport.AirportResponse;
+import com.example.Airport.role.UserRoleResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("${api-endpoint}")
 public class UserController {
 
     private final UserService userService;
@@ -19,9 +17,22 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping
-    public ResponseEntity<UserProfileResponse> createUser(@Valid @RequestBody UserRequest userRequest) {
-        UserProfileResponse userProfileResponse = userService.createUser(userRequest);
-        return new ResponseEntity<>(userProfileResponse, HttpStatus.CREATED);
+    @GetMapping("/user/get-all")
+    public ResponseEntity<List<UserWithReservationsResponse>> getAllUser() {
+        List<UserWithReservationsResponse> userWithReservationsResponse = userService.findAll();
+        return new ResponseEntity<>(userWithReservationsResponse, HttpStatus.OK);
+    }
+
+
+    @PutMapping("/user/update-role")
+    public ResponseEntity<UserRoleResponse> updateUserRole(@RequestParam String email, @RequestParam String newRole) {
+        UserRoleResponse response = userService.updateUserRole(email, newRole);
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/user/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return new ResponseEntity<>("User has been eliminated", HttpStatus.OK);
     }
 }

@@ -1,10 +1,9 @@
 package com.example.Airport.profile;
-
 import com.example.Airport.profile.exceptions.ProfileAlreadyExistException;
 import com.example.Airport.profile.exceptions.ProfileNotFoundException;
 import com.example.Airport.user.User;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -66,5 +65,10 @@ public class ProfileService {
                 .orElseThrow(() -> new ProfileNotFoundException("Profile not found for user ID: " + userId));
 
         return ProfileMapper.toResponse(profile);
+    }
+
+    @Transactional
+    public void deleteProfileByUserId(Long id) {
+        profileRepository.deleteByUserId(id);
     }
 }

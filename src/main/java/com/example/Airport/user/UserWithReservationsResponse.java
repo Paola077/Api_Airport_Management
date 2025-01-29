@@ -8,6 +8,7 @@ public record UserWithReservationsResponse(
         Long userId,
         String username,
         String email,
+        String role,
         List<ReservationResponse> reservations
 ) {
 }

@@ -45,18 +45,29 @@ public class SecurityConfiguration {
                        .deleteCookies("JSESSIONID"))
                .authorizeHttpRequests(auth -> auth
                     .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
-                       .requestMatchers(endpoint).permitAll()
-                       .requestMatchers(HttpMethod.POST, endpoint + "/register").permitAll()
+                       .requestMatchers(endpoint + "/public/**").permitAll()
+                       .requestMatchers(HttpMethod.GET, endpoint + "/users/get-all").hasRole("ADMIN")
+                       .requestMatchers(HttpMethod.PUT, endpoint + "/user/update-role").hasRole("ADMIN")
+                       .requestMatchers(endpoint + "/airport").hasRole("ADMIN")
+                       .requestMatchers(HttpMethod.GET,endpoint + "/flight/{id}").hasAnyRole("ADMIN", "USER")
+                       .requestMatchers(endpoint + "/flight").hasRole("ADMIN")
+                       .requestMatchers(endpoint + "/profile").hasRole("ADMIN")
+                       .requestMatchers(HttpMethod.GET, endpoint + "/reservation").hasRole("ADMIN")
+                       .requestMatchers(HttpMethod.DELETE, endpoint + "/reservation/{id}").hasRole("ADMIN")
+                       .requestMatchers(HttpMethod.GET,endpoint + "/reservation/{id}").hasAnyRole("ADMIN", "USER")
+                       .requestMatchers(endpoint + "/reservation/user/{id}").hasAnyRole("ADMIN", "USER")
+                       .requestMatchers(HttpMethod.POST,endpoint + "/reservation").hasAnyRole("ADMIN", "USER")
+                       .requestMatchers(HttpMethod.POST,endpoint + "/reservation/confirm").hasAnyRole("ADMIN", "USER")
+                       .requestMatchers(HttpMethod.POST, endpoint + "/public/register").permitAll()
+                       .requestMatchers(HttpMethod.POST, endpoint + "/public/login").permitAll()
                        .anyRequest().authenticated())
                .userDetailsService(jpaUserDetailsService)
                .httpBasic(withDefaults())
                .sessionManagement(session -> session
-                       .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
+                       .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
        http.headers(header -> header.frameOptions(frame -> frame.sameOrigin()));
 
        return http.build();
    }
-
-
 }

@@ -3,6 +3,7 @@ package com.example.Airport.global;
 import com.example.Airport.airport.exceptions.AirportAlreadyExistException;
 import com.example.Airport.airport.exceptions.AirportInvalidModificationException;
 import com.example.Airport.airport.exceptions.AirportNotFoundException;
+import com.example.Airport.auth.exceptions.InvalidCredentialsException;
 import com.example.Airport.flight.exceptions.FlightInvalidOriginAndDestination;
 import com.example.Airport.flight.exceptions.FlightInvalidSeatsException;
 import com.example.Airport.flight.exceptions.FlightNotFoundException;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.management.relation.RoleNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,7 +47,21 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleUserNotFound(UserNotFoundException exception) {
         Map<String, String> errors = new HashMap<>();
         errors.put("error", exception.getMessage());
+        return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<Map<String, String>> handleInvalidCredentialsException(InvalidCredentialsException exception) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error", exception.getMessage());
         return new ResponseEntity<>(errors, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(RoleNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleRoleNotFoundException(RoleNotFoundException exception) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error", exception.getMessage());
+        return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(AirportAlreadyExistException.class)

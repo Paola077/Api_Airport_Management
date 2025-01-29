@@ -106,7 +106,6 @@ public class ReservationService {
                 .collect(Collectors.toList());
     }
 
-    // Este será manejado por el admin
     public UserWithReservationsResponse getReservationsByUserId(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new ReservationNotFoundException("No reservations found for user ID: " + userId));
@@ -128,13 +127,10 @@ public class ReservationService {
 
         Flight flight = reservation.getFlight();
 
-        // Restaurar las plazas disponibles
         flight.setAvailableSeats(flight.getAvailableSeats() + reservation.getSeatsReserved());
 
-        flightRepository.save(flight); // Guardar el vuelo actualizado
-        reservationRepository.delete(reservation); // Eliminar la reserva
-
-        //TODO el usuario tiene que estar autenticado para eliminar la reserva
+        flightRepository.save(flight);
+        reservationRepository.delete(reservation);
     }
 
 

@@ -49,12 +49,14 @@ public class FlightService {
         Airport destination = airportRepository.findById(flightRequest.destinationId())
                 .orElseThrow(() -> new FlightInvalidOriginAndDestination("Destination airport not found."));
 
+        FlightStatus status = FlightStatus.valueOf(flightRequest.status().toUpperCase());
+
         List<Flight> exitingFlights = flightRepository.findByFilters(
                 flightRequest.originId(),
                 flightRequest.destinationId(),
                 flightRequest.departureDateTime(),
                 flightRequest.arrivalDateTime(),
-                FlightStatus.ACTIVE
+                status
         );
 
         if (!exitingFlights.isEmpty()) {

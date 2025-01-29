@@ -3,12 +3,13 @@ package com.example.Airport.auth;
 import com.example.Airport.profile.UserProfileResponse;
 import com.example.Airport.user.UserRequest;
 import com.example.Airport.user.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("${api-endpoint}")
@@ -20,14 +21,22 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<UserProfileResponse> registerUser(@RequestBody UserRequest userRequest) {
+    @PostMapping("/public/register")
+    public ResponseEntity<UserProfileResponse> registerUser(@Valid @RequestBody UserRequest userRequest) {
         UserProfileResponse response = userService.createUser(userRequest);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<String> login() {
-        return ResponseEntity.ok("Logged in successfully");
+    @PostMapping("/public/login")
+    public ResponseEntity<LoginResponse> login() {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+
+        String email = authentication.getName();
+        String role = authentication.getAuthorities().iterator().next().toString();
+
+        LoginResponse loginResponse = new LoginResponse(email, role);
+
+        return new ResponseEntity<>(loginResponse, HttpStatus.OK);
     }
 }

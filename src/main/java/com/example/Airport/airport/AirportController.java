@@ -1,14 +1,14 @@
 package com.example.Airport.airport;
 
+import com.example.Airport.user.UserController;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
-@RequestMapping("airports")
+@RequestMapping("${api-endpoint}")
 public class AirportController {
 
     private final AirportService airportService;
@@ -17,25 +17,25 @@ public class AirportController {
         this.airportService = airportService;
     }
 
-    @PostMapping
+    @PostMapping("/airport")
     public ResponseEntity<AirportResponse> createAirport(@Valid  @RequestBody AirportRequest airportRequest) {
         AirportResponse airportResponse = airportService.createAirport(airportRequest);
         return new ResponseEntity<>(airportResponse, HttpStatus.CREATED);
     }
 
-    @GetMapping
+    @GetMapping("/airport")
     public ResponseEntity<List<AirportResponse>> getAllAirports() {
        List<AirportResponse> airportResponseList = airportService.findAll();
        return new ResponseEntity<>(airportResponseList, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/airport/{id}")
     public ResponseEntity<AirportResponse> getAirportById(@PathVariable Long id) {
         AirportResponse airportResponse = airportService.findById(id);
         return new ResponseEntity<>(airportResponse, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/airport/{id}")
     public ResponseEntity<AirportResponse> updateAirport(
             @PathVariable Long id,
             @Valid @RequestBody AirportRequest airportRequest) {
@@ -43,7 +43,7 @@ public class AirportController {
         return ResponseEntity.ok(updatedAirport);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/airport/{id}")
     public ResponseEntity<String> deleteAirport(@PathVariable Long id) {
         airportService.deleteAirport(id);
         return new ResponseEntity<>("The airport has been eliminated", HttpStatus.OK);

@@ -1,8 +1,7 @@
 package com.example.Airport.role;
 
+import com.example.Airport.role.exceptions.RoleNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class RoleService {
@@ -13,9 +12,9 @@ public class RoleService {
     }
 
     public Role getById(Long id) {
-        Optional<Role> role = repository.findById(id);
-                // TODO .orElseThrow( () -> new RoleNotFoundException("Role not found"));
-        return role.get();
+        Role role = repository.findById(id)
+                .orElseThrow(() -> new RoleNotFoundException("Role not found"));
+        return role;
     }
 
     public Role assignDefaultRole() {

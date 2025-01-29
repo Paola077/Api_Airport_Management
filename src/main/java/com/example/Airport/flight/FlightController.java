@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/flights")
+@RequestMapping("${api-endpoint}")
 public class FlightController {
 
     private final FlightService flightService;
@@ -18,13 +18,13 @@ public class FlightController {
         this.flightService = flightService;
     }
 
-    @PostMapping
+    @PostMapping("/flight")
     public ResponseEntity<FlightResponse> createFlight(@Valid @RequestBody FlightRequest flightRequest) {
         FlightResponse flightResponse = flightService.createFlight(flightRequest);
         return new ResponseEntity<>(flightResponse, HttpStatus.CREATED);
     }
 
-    @GetMapping
+    @GetMapping("/flight")
     public ResponseEntity<List<FlightResponse>> getFlights(
             @RequestParam(required = false) Long originId,
             @RequestParam(required = false) Long destinationId,
@@ -36,20 +36,20 @@ public class FlightController {
         return ResponseEntity.ok(flights);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/flight/{id}")
     public ResponseEntity<FlightResponse> getAirportById(@PathVariable Long id) {
         FlightResponse flightResponse = flightService.findById(id);
         return new ResponseEntity<>(flightResponse, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/flight/{id}")
     public ResponseEntity<FlightResponse> updateFlight(@PathVariable Long id,
                                                        @Valid @RequestBody FlightRequest flightRequest) {
         FlightResponse updateFlight = flightService.updateFlight(id, flightRequest);
         return ResponseEntity.ok(updateFlight);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/flight/{id}")
     public ResponseEntity<String> deleteFlight(@PathVariable Long id) {
         flightService.deleteFlight(id);
         return new ResponseEntity<>("The Flight has been eliminated", HttpStatus.OK);

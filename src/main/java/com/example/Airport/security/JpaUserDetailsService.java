@@ -1,6 +1,7 @@
 package com.example.Airport.security;
 
 import com.example.Airport.reservation.exceptions.UserNotFoundException;
+import com.example.Airport.user.User;
 import com.example.Airport.user.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,10 +19,9 @@ public class JpaUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        System.out.println("User email : " + email);
-        return userRepository
-                .findByEmail(email)
-                .map(SecurityUser::new)
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("Usuario con email " + email + " no encontrado"));
+
+        return new SecurityUser(user);
     }
 }
