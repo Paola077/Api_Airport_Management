@@ -11,6 +11,8 @@ import java.util.stream.Collectors;
 @Service
 public class ProfileService {
 
+    private static final String DEFAULT_IMAGE_URL = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
+
     private final ProfileRepository profileRepository;
 
     public ProfileService(ProfileRepository profileRepository) {
@@ -27,7 +29,7 @@ public class ProfileService {
         profile.setUser(user);
         profile.setUsername(user.getUsername());
         profile.setEmail(user.getEmail());
-        profile.setImageUrl("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png");
+        profile.setImageUrl(DEFAULT_IMAGE_URL);
         profileRepository.save(profile);
         return profile;
     }
@@ -43,21 +45,6 @@ public class ProfileService {
         return profiles.stream()
                 .map(ProfileMapper::toResponse)
                 .collect(Collectors.toList());
-    }
-
-
-    public ProfileResponse getProfileById(Long id) {
-        Profile profile = profileRepository.findById(id)
-                .orElseThrow(()-> new ProfileNotFoundException("Profile not found for ID: " + id));
-
-        return ProfileMapper.toResponse(profile);
-    }
-
-    public ProfileResponse getProfileByEmail(String email) {
-        Profile profile = profileRepository.findByEmail(email)
-                .orElseThrow(() -> new ProfileNotFoundException("Profile not found for email: " + email));
-
-        return ProfileMapper.toResponse(profile);
     }
 
     public ProfileResponse getProfileByUserId(Long userId) {

@@ -2,6 +2,7 @@ package com.example.Airport.profile;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,27 +12,18 @@ import java.util.List;
 public class ProfileController {
 
     private final ProfileService profileService;
+    private final ProfileRepository profileRepository;
 
-    public ProfileController(ProfileService profileService) {
+    public ProfileController(ProfileService profileService,
+                             ProfileRepository profileRepository) {
         this.profileService = profileService;
+        this.profileRepository = profileRepository;
     }
 
     @GetMapping("/profile")
     public ResponseEntity<List<ProfileResponse>> getAllProfiles() {
         List<ProfileResponse> profileResponseList = profileService.getProfiles();
         return new ResponseEntity<>(profileResponseList, HttpStatus.OK);
-    }
-
-    @GetMapping("/profile/{id}")
-    public ResponseEntity<ProfileResponse> getProfileById(@PathVariable Long id) {
-        ProfileResponse profileResponse = profileService.getProfileById(id);
-        return new ResponseEntity<>(profileResponse, HttpStatus.OK);
-    }
-
-    @GetMapping("/profile/search")
-    public ResponseEntity<ProfileResponse> getProfileByEmail(@RequestParam String email) {
-        ProfileResponse profile = profileService.getProfileByEmail(email);
-        return ResponseEntity.ok(profile);
     }
 
     @GetMapping("/profile/user/{userId}")
