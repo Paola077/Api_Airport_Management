@@ -45,6 +45,7 @@ public class SecurityConfiguration {
                        .deleteCookies("JSESSIONID"))
                .authorizeHttpRequests(auth -> auth
                     .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
+                       .requestMatchers(endpoint).permitAll()
                        .requestMatchers(HttpMethod.GET, endpoint + "/users/get-all").hasRole("ADMIN")
                        .requestMatchers(HttpMethod.PUT, endpoint + "/user/update-role").hasRole("ADMIN")
                        .requestMatchers(endpoint + "/airport").hasRole("ADMIN")
