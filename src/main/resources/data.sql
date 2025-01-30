@@ -9,12 +9,12 @@ VALUES
     ('Alice Brown', 'alice.brown@example.com', '$2a$10$yGQtiOMK/wM8F25pVaC.ieea5z0PXX/XPuxbR4.mpCoJW2wgvV3Hq'),
     ('Bob White', 'bob.white@example.com', '$2a$10$yGQtiOMK/wM8F25pVaC.ieea5z0PXX/XPuxbR4.mpCoJW2wgvV3Hq');
 
-INSERT INTO profiles (id, user_id, username, email, image_url) VALUES
-    (1, 1, 'John Doe', 'john.doe@example.com', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'),
-    (2, 2, 'Jane Smith', 'jane.smith@example.com', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'),
-    (3, 3, 'Admin User', 'admin@example.com', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'),
-    (4, 4, 'Alice Brown', 'alice.brown@example.com', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'),
-    (5, 5, 'Bob White', 'bob.white@example.com', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png');
+INSERT INTO profiles (user_id, username, email, image_url) VALUES
+    (1, 'John Doe', 'john.doe@example.com', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'),
+    (2, 'Jane Smith', 'jane.smith@example.com', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'),
+    (3, 'Admin User', 'admin@example.com', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'),
+    (4, 'Alice Brown', 'alice.brown@example.com', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'),
+    (5, 'Bob White', 'bob.white@example.com', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png');
 
 INSERT INTO role_users (id, id_role) VALUES
     (1, 1),
