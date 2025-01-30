@@ -45,11 +45,11 @@ public class SecurityConfiguration {
                        .deleteCookies("JSESSIONID"))
                .authorizeHttpRequests(auth -> auth
                     .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
-                       .requestMatchers(endpoint + "/public/**").permitAll()
                        .requestMatchers(HttpMethod.GET, endpoint + "/users/get-all").hasRole("ADMIN")
                        .requestMatchers(HttpMethod.PUT, endpoint + "/user/update-role").hasRole("ADMIN")
                        .requestMatchers(endpoint + "/airport").hasRole("ADMIN")
                        .requestMatchers(HttpMethod.GET,endpoint + "/flight/{id}").hasAnyRole("ADMIN", "USER")
+                       .requestMatchers(HttpMethod.GET,endpoint + "/flight").hasAnyRole("ADMIN", "USER")
                        .requestMatchers(endpoint + "/flight").hasRole("ADMIN")
                        .requestMatchers(endpoint + "/profile").hasRole("ADMIN")
                        .requestMatchers(HttpMethod.GET, endpoint + "/reservation").hasRole("ADMIN")
