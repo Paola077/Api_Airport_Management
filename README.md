@@ -4,8 +4,12 @@
 
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.4.1-green?style=for-the-badge&logo=spring) ![Java](https://img.shields.io/badge/Java-21-orange?style=for-the-badge&logo=java) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16.2-blue?style=for-the-badge&logo=postgresql) ![Maven](https://img.shields.io/badge/Maven-4.0.0-red?style=for-the-badge&logo=apachemaven)
 
+
+
 ## 📌 Descripción
 Sistema de gestión para una aerolínea desarrollado con **Spring Boot** y **Spring Security**. Permite administrar usuarios, vuelos, reservas y aeropuertos con autenticación segura a través de **Basic Auth**. Además, automatiza la actualización de vuelos y reservas.
+
+
 
 ## 🚀 Tecnologías Utilizadas
 - **Java 21**
@@ -15,8 +19,12 @@ Sistema de gestión para una aerolínea desarrollado con **Spring Boot** y **Spr
 - **Maven**
 - **JWT para seguridad**
 
+
+
 ### 🔗**Diagrama de base de datos**: 
 ![Diagrama UML](utils/DiagramaUML.png)
+
+
 
 ## 📜 Características
 ✅ **Gestión de Usuarios**: Registro, autenticación, roles (**ROLE_ADMIN** y **ROLE_USER**).
@@ -40,6 +48,8 @@ Sistema de gestión para una aerolínea desarrollado con **Spring Boot** y **Spr
 
 ✅ **Pruebas Automáticas**: Configuración de CI con tests en `main`.
 
+
+
 ## 👨‍💻 Roles y Permisos
 | Acción | ROLE_ADMIN | ROLE_USER |
 |--------|-----------|-----------|
@@ -48,6 +58,8 @@ Sistema de gestión para una aerolínea desarrollado con **Spring Boot** y **Spr
 | Listado de Reservas | ✅ | ❌ |
 | Ver Historial de Reservas | ✅ | ✅ |
 | Crear y Confirmar Reservas | ✅ | ✅ |
+
+
 
 ## 🔧 Instalación
 1️⃣ Clona el repositorio:
@@ -64,6 +76,8 @@ spring.datasource.password=tu_contraseña
 ```sh
 mvn spring-boot:run
 ```
+
+
 
 ## 📜 API Endpoints
 ### 🧑‍💻 Usuarios
@@ -111,6 +125,7 @@ mvn spring-boot:run
 | `GET`    | `/api/profile/{id}`                                 | Obtener perfil por ID             |
 | `GET`    | `/api/profile/search/?email=example123@example.com` | Obtener perfil por email          |
 | `GET`    | `/api/profile/user/{id}`                            | Obtener perfil ID de usuario      |
+
 
 
 ## 📬 Contacto
