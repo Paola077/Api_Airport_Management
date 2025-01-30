@@ -44,5 +44,4 @@ public class SecurityUser implements UserDetails {
 
         return authorities;
     }
-
 }

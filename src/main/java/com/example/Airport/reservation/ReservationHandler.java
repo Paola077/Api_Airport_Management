@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Slf4j
 @EnableScheduling
 @Component
 public class ReservationHandler {
@@ -26,7 +25,7 @@ public class ReservationHandler {
         this.flightRepository = flightRepository;
     }
 
-    @Scheduled(fixedRate = 10000) // Cada minuto se borran las reservas expiradas
+    @Scheduled(fixedRate = 10000)
     public void releaseExpiredReservations() {
         LocalDateTime now = LocalDateTime.now();
         List<Reservation> expiredReservations = reservationRepository.findAll()
@@ -44,7 +43,7 @@ public class ReservationHandler {
         }
     }
 
-    @Scheduled(fixedRate = 86400000) //Cada día -> Se limpian las reservas confirmadas de vuelos que ya han salido
+    @Scheduled(fixedRate = 86400000)
     public void cleanUpConfirmedReservations() {
         LocalDateTime now = LocalDateTime.now();
         List<Reservation> expiredReservations = reservationRepository.findAll()
@@ -59,7 +58,7 @@ public class ReservationHandler {
     }
 
 
-    @Scheduled(fixedRate = 15000) // Verificar cada 15 segundos
+    @Scheduled(fixedRate = 15000)
     public void updateFlightStatuses() {
         List<Flight> activeFlights = flightRepository.findAll();
 
