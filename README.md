@@ -15,7 +15,8 @@ Sistema de gestión para una aerolínea desarrollado con **Spring Boot** y **Spr
 - **Maven**
 - **JWT para seguridad**
 
-### 🔗**Diagrama De Base de datos**: [UML](https://lucid.app/lucidchart/82c343a9-4c3b-44da-ac04-dba8b38c3f40/edit?beaconFlowId=4DCC666723C27FCE&invitationId=inv_1a06f0fb-a03c-4081-9f20-28b6522ffd9d&page=0_0#)
+### 🔗**Diagrama de base de datos**: 
+![Diagrama UML](utils/DiagramaUML.png)
 
 ## 📜 Características
 ✅ **Gestión de Usuarios**: Registro, autenticación, roles (**ROLE_ADMIN** y **ROLE_USER**).
