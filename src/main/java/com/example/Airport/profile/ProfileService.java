@@ -67,6 +67,18 @@ public class ProfileService {
         return ProfileMapper.toResponse(profile);
     }
 
+    public ProfileUpdateResponse updateProfileByUser(Long id, ProfileUpdateRequest updateRequest) {
+        Profile profile = profileRepository.findById(id)
+                .orElseThrow(() -> new ProfileNotFoundException("Profile not found with ID: " + id));
+
+        profile.setUsername(updateRequest.username());
+        profile.setImageUrl(updateRequest.imageUrl());
+
+        Profile updateProfile = profileRepository.save(profile);
+
+        return ProfileMapper.toUpdateResponse(updateProfile);
+    }
+
     @Transactional
     public void deleteProfileByUserId(Long id) {
         profileRepository.deleteByUserId(id);
