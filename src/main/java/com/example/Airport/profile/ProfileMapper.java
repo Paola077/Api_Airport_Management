@@ -11,5 +11,12 @@ public class ProfileMapper {
         );
     }
 
-
+    public static ProfileUpdateResponse toUpdateResponse(Profile profile) {
+        return new ProfileUpdateResponse(
+                profile.getId(),
+                profile.getUsername(),
+                profile.getEmail(),
+                profile.getImageUrl()
+        );
+    }
 }
