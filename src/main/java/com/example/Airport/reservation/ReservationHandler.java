@@ -30,12 +30,12 @@ public class ReservationHandler {
         LocalDateTime now = LocalDateTime.now();
         List<Reservation> expiredReservations = reservationRepository.findAll()
                 .stream()
-                .filter(r -> r.getReservationStatus().equals(ReservationStatus.PENDING)) // Filtrar solo las PENDING
-                .filter(r -> r.getReservationExpirationTime().isBefore(now)) // Filtrar las expiradas
+                .filter(r -> r.getReservationStatus().equals(ReservationStatus.PENDING))
+                .filter(r -> r.getReservationExpirationTime().isBefore(now))
                 .toList();
 
         for (Reservation reservation : expiredReservations) {
-            Flight flight = reservation.getFlight(); // Liberar asientos
+            Flight flight = reservation.getFlight();
             flight.setAvailableSeats(flight.getAvailableSeats() + reservation.getSeatsReserved());
             flightRepository.save(flight);
 
