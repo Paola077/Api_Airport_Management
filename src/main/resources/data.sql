@@ -30,7 +30,6 @@ INSERT INTO airport (code, name, location) VALUES
 ('ATL', 'Hartsfield-Jackson Atlanta International Airport', 'Atlanta, USA'),
 ('DFW', 'Dallas/Fort Worth International Airport', 'Dallas, USA');
 
-
 INSERT INTO flight (origin_id, destination_id, departure_date_time, arrival_date_time, available_seats, total_seats, status) VALUES
 (1, 2, '2025-06-16T08:00:00', '2025-06-16T12:00:00', 100, 150, 'ACTIVE'),
 (2, 3, '2025-04-17T09:30:00', '2025-04-17T13:45:00', 80, 120, 'ACTIVE'),
