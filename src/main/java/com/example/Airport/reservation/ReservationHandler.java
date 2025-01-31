@@ -25,7 +25,7 @@ public class ReservationHandler {
         this.flightRepository = flightRepository;
     }
 
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 5000)
     public void releaseExpiredReservations() {
         LocalDateTime now = LocalDateTime.now();
         List<Reservation> expiredReservations = reservationRepository.findAll()

@@ -17,7 +17,7 @@ Sistema de gestión para una aerolínea desarrollado con **Spring Boot** y **Spr
 - **Spring Security**
 - **PostgreSQL**
 - **Maven**
-- **JWT para seguridad**
+- **Basic Auth para seguridad**
 
 
 
@@ -119,16 +119,14 @@ mvn spring-boot:run
 | `DELETE` | `/api/reservations/{id}`        | Eliminar reserva                   |
 
 ### 📇 Perfiles
-| Método   | Endpoint                                            | Descripción                       |
-|----------|-----------------------------------------------------|-----------------------------------|
-| `GET`    | `/api/profile`                                      | Obtener todos los perfiles        |
-| `GET`    | `/api/profile/{id}`                                 | Obtener perfil por ID             |
-| `GET`    | `/api/profile/search/?email=example123@example.com` | Obtener perfil por email          |
-| `GET`    | `/api/profile/user/{id}`                            | Obtener perfil ID de usuario      |
+| Método | Endpoint                             | Descripción                  |
+|--------|--------------------------------------|------------------------------|
+| `GET`  | `/api/profile`                       | Obtener todos los perfiles   |
+| `GET`  | `/api/profile/user/{id}`             | Obtener perfil ID de usuario |
+| `PUT`  | `/api/profile/{id}`                  | Actualizar la foto de perfil |
 
 
 
 ## 📬 Contacto
-🔗 **LinkedIn**: [LinkedIn](https://www.linkedin.com/in/paolaperdomo07/)  
-🚀 **Portafolio**: [Github](https://github.com/Paola077)
+🔗 **LinkedIn**: [LinkedIn](https://www.linkedin.com/in/paolaperdomo07/)
 
